@@ -76,6 +76,6 @@ const AppContextProvider = (props) => {
         </AppContext.Provider>
     )
 
-}
+};
 
 export default AppContextProvider
