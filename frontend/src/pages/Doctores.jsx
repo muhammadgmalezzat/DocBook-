@@ -8,6 +8,7 @@ const Doctores = () => {
   const { speciality } = useParams();
   //this will be array of doctors come from db 
   const [filterDoc, setFilterDoc] = useState([]);
+  
   //console.log(speciality)
   const filterHandler = () => {
     if (speciality) {
