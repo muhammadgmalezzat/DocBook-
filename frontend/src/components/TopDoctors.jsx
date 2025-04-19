@@ -1,12 +1,12 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import { useNavigate } from 'react-router-dom'
-//import { AppContext } from '../context/AppContext'
-import { doctors } from '../assets/assets'
+import { AppContext } from '../context/AppContext'
+//import { doctors } from '../assets/assets'
 const TopDoctors = () => {
 
     const navigate = useNavigate()
 
-    //const { doctors } = useContext(AppContext)
+    const { doctors } = useContext(AppContext)
 
     return (
         <div className='flex flex-col items-center gap-4 my-16 text-[#262626] md:mx-10'>

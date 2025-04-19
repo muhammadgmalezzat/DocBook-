@@ -1,7 +1,7 @@
-import React, {  useEffect, useState } from 'react'
-import {  useParams,useNavigate } from 'react-router-dom'
+import React, {  useEffect, useState,useContext } from 'react'
+import {  useParams } from 'react-router-dom'
 import { AppContext } from '../context/AppContext'
-import { assets,doctors } from '../assets/assets'
+import { assets } from '../assets/assets'
 import RelatedDoctors from '../components/RelatedDoctors'
 //import axios from 'axios'
 ///import { toast } from 'react-toastify'
@@ -9,7 +9,7 @@ import RelatedDoctors from '../components/RelatedDoctors'
 const Appointment = () => {
 
   const { docId } = useParams();
-  //const { doctors } = useContext(AppContext);
+  const { doctors } = useContext(AppContext);
     const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
 
     const [docInfo, setDocInfo] = useState(null)

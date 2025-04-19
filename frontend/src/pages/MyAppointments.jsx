@@ -1,8 +1,10 @@
-import React from 'react'
-import { doctors } from '../assets/assets';
+import React,{useContext} from 'react'
+
+import { AppContext } from '../context/AppContext'
 
 const MyAppointments = () => {
-  console.log(doctors.slice(0, 3))
+      const { doctors } = useContext(AppContext)
+  
   return (
     <div>
       <p className='pb-3 mt-12 text-lg font-medium text-gray-600 border-b'>MyAppointments</p>

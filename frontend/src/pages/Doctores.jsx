@@ -1,11 +1,11 @@
-import React, { useEffect,useState } from 'react'
+import React, { useEffect,useState ,useContext} from 'react'
 import { useParams,useNavigate } from 'react-router-dom'
-import { doctors } from '../assets/assets';
-//import { AppContext } from '../context/AppContext'
-//import { doctors } from '../assets/assets';
+import { AppContext } from '../context/AppContext'
+
 const Doctores = () => {
   const navigate = useNavigate();
   const { speciality } = useParams();
+  const { doctors } = useContext(AppContext)
   //this will be array of doctors come from db 
   const [filterDoc, setFilterDoc] = useState([]);
   
