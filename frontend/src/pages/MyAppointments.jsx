@@ -1,9 +1,22 @@
 import React,{useContext} from 'react'
-
+import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext'
 
 const MyAppointments = () => {
-      const { doctors } = useContext(AppContext)
+  const { doctors, backendUrl, token } = useContext(AppContext);
+
+    //const navigate = useNavigate()
+
+    //const [appointments, setAppointments] = useState([])
+    //const [payment, setPayment] = useState('')
+
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    // Function to format the date eg. ( 20_01_2000 => 20 Jan 2000 )
+    const slotDateFormat = (slotDate) => {
+        const dateArray = slotDate.split('_')
+        return dateArray[0] + " " + months[Number(dateArray[1])] + " " + dateArray[2]
+    }
   
   return (
     <div>
@@ -21,10 +34,12 @@ const MyAppointments = () => {
                             <p className='text-[#262626] text-base font-semibold'>{item.name}</p>
                             <p>{item.speciality}</p>
                             <p className='text-[#464646] font-medium mt-1'>Address:</p>
-                            <p className=''>{item.address.line1}</p>
-                            <p className=''>{item.address.line2}</p>
+                            <p className=''>{item.address.street}</p>
+                            <p className=''>{item.address.city}</p>
                       <p className=' mt-1'><span className='text-sm text-[#3C3C3C] font-medium'>Date & Time:</span>
-                        {/* {slotDateFormat(item.slotDate)} |  {item.slotTime} */}
+                        {//slotDateFormat(item.slotDate)
+                        //
+                        } |  {item.slotTime}
                       </p>
                         </div>
                     </div>

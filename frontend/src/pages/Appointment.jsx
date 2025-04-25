@@ -1,15 +1,16 @@
 import React, {  useEffect, useState,useContext } from 'react'
-import {  useParams } from 'react-router-dom'
+import {  useParams,useNavigate } from 'react-router-dom'
 import { AppContext } from '../context/AppContext'
 import { assets } from '../assets/assets'
 import RelatedDoctors from '../components/RelatedDoctors'
-//import axios from 'axios'
-///import { toast } from 'react-toastify'
+import axios from 'axios'
+
+import { toast } from 'react-toastify'
 
 const Appointment = () => {
 
-  const { docId } = useParams();
-  const { doctors } = useContext(AppContext);
+    const { docId } = useParams();
+    const { doctors ,token,backendUrl,getDoctorsData} = useContext(AppContext);
     const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
 
     const [docInfo, setDocInfo] = useState(null)
@@ -17,43 +18,43 @@ const Appointment = () => {
     const [slotIndex, setSlotIndex] = useState(0)
     const [slotTime, setSlotTime] = useState('')
 
-    //const navigate = useNavigate()
+    const navigate = useNavigate()
 
     const fetchDocInfo = async () => {
-      const docInfo = doctors.find((doc) => doc._id === docId);
-      setDocInfo(docInfo);
+        const docInfo = doctors.find((doc) => doc._id === docId);
+        setDocInfo(docInfo);
     }
 
     const getAvailableSolts = async () => {
-      // to calculate available slots for particular doctor
-      setDocSlots([])
+        // to calculate available slots for particular doctor
+        setDocSlots([])
 
-    //     // getting current date
-      let today = new Date();
-      console.log(today )
+        // getting current date
+        let today = new Date();
+        console.log(today)
 
-      for (let i = 0; i < 7; i++) {
-      // loop on 7 days
-        // getting date with index 
-        //in current day we should calc valid starting date
-        let currentDate = new Date(today)
-        currentDate.setDate(today.getDate() + i)
+        for (let i = 0; i < 7; i++) {
+            // loop on 7 days
+            // getting date with index 
+            //in current day we should calc valid starting date
+            let currentDate = new Date(today)
+            currentDate.setDate(today.getDate() + i)
 
-        // setting end time of the date with index
-        let endTime = new Date()
-        endTime.setDate(today.getDate() + i)
-        endTime.setHours(21, 0, 0, 0)
+            // setting end time of the date with index
+            let endTime = new Date()
+            endTime.setDate(today.getDate() + i)
+            endTime.setHours(21, 0, 0, 0)
 
-        // setting hours 
-        if (today.getDate() === currentDate.getDate()) {
-            currentDate.setHours(currentDate.getHours() > 10 ? currentDate.getHours() + 1 : 10)
-            currentDate.setMinutes(currentDate.getMinutes() > 30 ? 30 : 0)
-        } else {
-            currentDate.setHours(10)
-            currentDate.setMinutes(0)
-        }
+            // setting hours 
+            if (today.getDate() === currentDate.getDate()) {
+                currentDate.setHours(currentDate.getHours() > 10 ? currentDate.getHours() + 1 : 10)
+                currentDate.setMinutes(currentDate.getMinutes() > 30 ? 30 : 0)
+            } else {
+                currentDate.setHours(10)
+                currentDate.setMinutes(0)
+            }
 
-        let timeSlots = [];
+            let timeSlots = [];
 
 
             while (currentDate < endTime) {
@@ -83,46 +84,46 @@ const Appointment = () => {
         }
 
     }
-    // const bookAppointment = async () => {
+    const bookAppointment = async () => {
 
-    //     if (!token) {
-    //         toast.warning('Login to book appointment')
-    //         return navigate('/login')
-    //     }
+        if (!token) {
+            toast.warning('Login to book appointment')
+            return navigate('/login')
+        }
 
-    //     const date = docSlots[slotIndex][0].datetime
+         const date = docSlots[slotIndex][0].datetime
 
-    //     let day = date.getDate()
-    //     let month = date.getMonth() + 1
-    //     let year = date.getFullYear()
+        let day = date.getDate()
+        let month = date.getMonth() + 1
+        let year = date.getFullYear()
 
-    //     const slotDate = day + "_" + month + "_" + year
+        const slotDate = day + "_" + month + "_" + year
 
-    //     try {
+        try {
 
-    //         const { data } = await axios.post(backendUrl + '/api/user/book-appointment', { docId, slotDate, slotTime }, { headers: { token } })
-    //         if (data.success) {
-    //             toast.success(data.message)
-    //             getDoctosData()
-    //             navigate('/my-appointments')
-    //         } else {
-    //             toast.error(data.message)
-    //         }
+            const { data } = await axios.post(backendUrl + '/api/user/book-appointment', { docId, slotDate, slotTime }, { headers: { token } })
+            if (data.success) {
+                toast.success(data.message)
+                getDoctorsData()
+                navigate('/my-appointments')
+            } else {
+                toast.error(data.message)
+            }
 
-    //     } catch (error) {
-    //         console.log(error)
-    //         toast.error(error.message)
-    //     }
+        } catch (error) {
+            console.log(error)
+            toast.error(error.message)
+        }
 
-    // }
+    }
 
-  useEffect(() => {
-    fetchDocInfo();
-  }, [doctors, docId]);
+    useEffect(() => {
+        fetchDocInfo();
+    }, [doctors, docId]);
 
     useEffect(() => {
         if (docInfo) {
-          getAvailableSolts();
+            getAvailableSolts();
         }
     }, [docInfo])
 
@@ -152,16 +153,16 @@ const Appointment = () => {
                         <p className='text-sm text-gray-600 max-w-[700px] mt-1'>{docInfo.about}</p>
                     </div>
 
-            <p className='text-gray-600 font-medium mt-4'>Appointment fee: <span className='text-gray-800'>
-              {/* {currencySymbol} */}
-              {docInfo.fees}</span> </p>
+                    <p className='text-gray-600 font-medium mt-4'>Appointment fee: <span className='text-gray-800'>
+                        {/* {currencySymbol} */}
+                        {docInfo.fees}</span> </p>
                 </div>
             </div>
 
             {/* Booking slots */}
             <div className='sm:ml-72 sm:pl-4 mt-8 font-medium text-[#565656]'>
                 <p >Booking slots</p>
-          <div className='flex gap-3 items-center w-full overflow-x-scroll mt-4'>
+                <div className='flex gap-3 items-center w-full overflow-x-scroll mt-4'>
             
                     {docSlots.length && docSlots.map((item, index) => (
                         <div onClick={() => setSlotIndex(index)} key={index} className={`text-center py-6 min-w-16 rounded-full cursor-pointer ${slotIndex === index ? 'bg-primary text-white' : 'border border-[#DDDDDD]'}`}>
@@ -178,15 +179,15 @@ const Appointment = () => {
                     ))}
                 </div>
 
-          <button
-            //onClick={bookAppointment}
-            className='bg-primary text-white text-sm font-light px-20 py-3 rounded-full my-6'>Book an appointment</button>
+                <button
+                    onClick={bookAppointment}
+                    className='bg-primary text-white text-sm font-light px-20 py-3 rounded-full my-6'>Book an appointment</button>
             </div>
 
             {/* Listing Releated Doctors */}
             <RelatedDoctors speciality={docInfo.speciality} docId={docId} />
         </div>
     ) : null
-}
+};
 
 export default Appointment
