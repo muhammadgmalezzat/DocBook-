@@ -7,8 +7,9 @@ import { AppContext } from '../../context/AppContext'
 const AllAppointments = () => {
 
   const { aToken, appointments, cancelAppointment, getAllAppointments } = useContext(AdminContext)
-  const { slotDateFormat, calculateAge, currency } = useContext(AppContext)
-
+  const { slotDateFormat, calculateAge, currency } = useContext(AppContext);
+  console.log(appointments);
+  
   useEffect(() => {
     if (aToken) {
       getAllAppointments()
