@@ -81,11 +81,20 @@ const DoctorProfile = () => {
 
                     <div className='flex gap-2 py-2'>
                         <p>Address:</p>
-                        <p className='text-sm'>
-                            {isEdit ? <input type='text' onChange={(e) => setProfileData(prev => ({ ...prev, address: { ...prev.address, line1: e.target.value } }))} value={profileData.address.line1} /> : profileData.address.line1}
+                            {isEdit && profileData.address 
+                        ? <p>
+              <input className='bg-gray-50' type="text"
+                onChange={(e) => setProfileData(prev => ({ ...prev, address: { ...prev.address, street: e.target.value } }))}
+                value={profileData.address.street}
+              />
                             <br />
-                            {isEdit ? <input type='text' onChange={(e) => setProfileData(prev => ({ ...prev, address: { ...prev.address, line2: e.target.value } }))} value={profileData.address.line2} /> : profileData.address.line2}
-                        </p>
+              <input className='bg-gray-50' type="text"
+                onChange={(e) => setProfileData(prev => ({ ...prev, address: { ...prev.address, city: e.target.value } }))}
+                value={profileData.address.city}
+              /></p>
+            : <p className='text-gray-500'>
+              {profileData.address?.street} <br /> {profileData.address?.city}</p>
+                    }
                     </div>
 
                     <div className='flex gap-1 pt-2'>

@@ -7,7 +7,7 @@ import { AppContext } from '../../context/AppContext'
 
 const DoctorDashboard = () => {
 
-  const { dToken, dashData, getDashData, cancelAppointment, completeAppointment } = useContext(DoctorContext)
+  const { dToken, docDashData, getDashData, cancelAppointment, completeAppointment } = useContext(DoctorContext)
   const { slotDateFormat, currency } = useContext(AppContext)
 
 
@@ -19,31 +19,52 @@ const DoctorDashboard = () => {
 
   }, [dToken])
 
-  return dashData && (
-    <div className='m-5'>
+  return docDashData && (
+    <div className='m-5 w-full px-5'>
 
-      <div className='flex flex-wrap gap-3'>
-        <div className='flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all'>
+      <div className='flex flex-wrap gap-3 w-full'>
+        <div className='flex items-center gap-2 bg-white p-4 w-full md:w-[32%] rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all'>
           <img className='w-14' src={assets.earning_icon} alt="" />
           <div>
-            <p className='text-xl font-semibold text-gray-600'>{currency} {dashData.earnings}</p>
+            <p className='text-xl font-semibold text-gray-600'>{currency} {docDashData.earnings}</p>
             <p className='text-gray-400'>Earnings</p>
           </div>
         </div>
-        <div className='flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all'>
+        <div className='flex items-center gap-2 bg-white p-4 w-full md:w-[32%] rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all'>
           <img className='w-14' src={assets.appointments_icon} alt="" />
           <div>
-            <p className='text-xl font-semibold text-gray-600'>{dashData.appointments}</p>
+            <p className='text-xl font-semibold text-gray-600'>{docDashData.appointments}</p>
             <p className='text-gray-400'>Appointments</p>
           </div>
         </div>
-        <div className='flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all'>
+        <div className='flex items-center gap-2 bg-white p-4 w-full md:w-[32%] rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all'>
           <img className='w-14' src={assets.patients_icon} alt="" />
           <div>
-            <p className='text-xl font-semibold text-gray-600'>{dashData.patients}</p>
+            <p className='text-xl font-semibold text-gray-600'>{docDashData.patients}</p>
             <p className='text-gray-400'>Patients</p></div>
         </div>
       </div>
+
+      <div className='flex flex-wrap gap-3 w-full pt-5'> 
+  <div className='flex flex-col gap-1 bg-white p-4 w-full md:w-[32%] rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all'>
+    <p className='text-xl font-semibold text-gray-600'>Completed</p>
+    <p className='text-gray-400'>{docDashData.completed} appointments</p>
+    <p className='text-green-500 font-semibold'>{docDashData.completedPercentage}%</p>
+  </div>
+
+  <div className='flex flex-col gap-1 bg-white p-4 w-full md:w-[32%] rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all'>
+    <p className='text-xl font-semibold text-gray-600'>Pending</p>
+    <p className='text-gray-400'>{docDashData.pending} appointments</p>
+    <p className='text-yellow-500 font-semibold'>{docDashData.pendingPercentage}%</p>
+  </div>
+
+  <div className='flex flex-col gap-1 bg-white p-4 w-full md:w-[32%] rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all'>
+    <p className='text-xl font-semibold text-gray-600'>Cancelled</p>
+    <p className='text-gray-400'>{docDashData.cancelled} appointments</p>
+    <p className='text-red-500 font-semibold'>{docDashData.cancelledPercentage}%</p>
+  </div>
+</div>
+
 
       <div className='bg-white'>
         <div className='flex items-center gap-2.5 px-4 py-4 mt-10 rounded-t border'>
@@ -52,7 +73,7 @@ const DoctorDashboard = () => {
         </div>
 
         <div className='pt-4 border border-t-0'>
-          {dashData.latestAppointments.slice(0, 5).map((item, index) => (
+          {docDashData.latestAppointments.slice(0, 5).map((item, index) => (
             <div className='flex items-center px-6 py-3 gap-3 hover:bg-gray-100' key={index}>
               <img className='rounded-full w-10' src={item.userData.image} alt="" />
               <div className='flex-1 text-sm'>

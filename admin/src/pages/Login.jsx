@@ -1,5 +1,7 @@
-import {useState,useContext} from 'react'
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AdminContext } from '../context/adminContext'
+import { DoctorContext } from '../context/DoctorContext'
 import axios from 'axios'
 import { toast } from 'react-toastify';
 
@@ -8,9 +10,8 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { setAToken,backendUrl } = useContext(AdminContext);
-    //const backendUrl = import.meta.env.VITE_BACKEND_URL
-console.log(backendUrl)
-
+  const { setDToken } = useContext(DoctorContext);
+  const navigate = useNavigate();
   const onSubmitHandler = async (event) => {
     event.preventDefault();
 
@@ -19,8 +20,9 @@ console.log(backendUrl)
 
       const { data } = await axios.post(backendUrl + '/api/admin/login', { email, password })
       if (data.success) {
-        setAToken(data.token)
-        localStorage.setItem('aToken', data.token)
+        toast.success(data.message)
+        setAToken(data.atoken);
+        localStorage.setItem('aToken', data.atoken);
       } else {
         console.log(data.message)
         toast.error(data.message)
@@ -30,13 +32,13 @@ console.log(backendUrl)
 
       const { data } = await axios.post(backendUrl + '/api/doctor/login', { email, password })
       if (data.success) {
+        toast.success(data.message)
         console.log(data)
-        //setDToken(data.token)
-        //localStorage.setItem('dToken', data.token)
+        setDToken(data.dtoken)
+        localStorage.setItem('dToken', data.dtoken)
       } else {
-                console.log(data.message)
-
-        //toast.error(data.message)
+        console.log(data.message);
+        toast.error(data.message);
       }
 
     }

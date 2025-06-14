@@ -2,6 +2,7 @@ import validator from "validator";
 import doctorModel from "../models/doctorModel.js";
 import { v2 as cloudinary } from "cloudinary";
 import userModel from "../models/userModel.js";
+import appointmentModel from '../models/appointmentModel.js'
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -108,8 +109,64 @@ const allDoctors = async (req, res) => {
 
 }
 
+// API to get all appointments list
+const appointmentsAdmin = async (req, res) => {
+    try {
 
+        const appointments = await appointmentModel.find({})
+            //.populate('docId', 'name email fees image') 
+            //.populate('userId', 'name email phone image');
+        res.json({ success: true, appointments })
 
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
 
+}
+// API for appointment cancellation
+const appointmentCancel = async (req, res) => {
+    try {
 
-export { addDoctor,loginAdmin,allDoctors };
+        const { appointmentId } = req.body
+        await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true })
+
+        res.json({ success: true, message: 'Appointment Cancelled' })
+
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+
+}
+
+// api to get admin dashboard data
+const adminDashboard = async (req, res) => {
+    try {
+        const doctors = await doctorModel.countDocuments();
+        const patients = await userModel.countDocuments();
+        const appointments = await appointmentModel.countDocuments();
+        const latestAppointments = await appointmentModel.find({}).sort({ date: -1 }).limit(5);
+        const dashboardData = {
+            doctors,
+            patients,
+            appointments,
+            latestAppointments
+        }
+
+        res.json({ success: true, dashboardData })
+
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
+export {
+    addDoctor,
+    loginAdmin,
+    allDoctors,
+    appointmentsAdmin,
+    appointmentCancel,
+    adminDashboard
+};

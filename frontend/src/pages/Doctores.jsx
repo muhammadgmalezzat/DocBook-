@@ -23,7 +23,7 @@ const Doctores = () => {
   }, [doctors, speciality])
   
   return (
-    <div className='flex flex-col items-center gap-4 my-16 text-[#262626] md:mx-10'>
+    <div className='flex flex-col items-center gap-4 my-16 text-[#262626] md:mx-10 '>
       <p className='text-gray-600'>Browse through the doctors specialist.</p>
       <div className='flex flex-col sm:flex-row items-start gap-5 mt-5'>
         <div className='flex flex-col gap-4 text-sm text-gray-600 '>
@@ -38,7 +38,7 @@ const Doctores = () => {
           <p onClick={() => speciality === 'Gastroenterologist' ? navigate('/doctors') : navigate('/doctors/Gastroenterologist')} className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer ${speciality === 'Gastroenterologist' ? 'bg-[#E2E5FF] text-black ' : ''}`}>Gastroenterologist</p>
         </div>
         {/* doctors part */}
-        <div className='w-full grid grid-cols-auto gap-4 gap-y-6'>
+        <div className='w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 gap-y-6'>
           {filterDoc.map((item, index) => (
             <div onClick={() => { navigate(`/appointment/${item._id}`); scrollTo(0, 0) }} className='border border-[#C9D8FF] rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500' key={index}>
               <img className='bg-[#EAEFFF]' src={item.image} alt="" />

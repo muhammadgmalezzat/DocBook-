@@ -9,12 +9,13 @@ const AdminContextProvider = (props) => {
 
     const [aToken, setAToken] = useState(localStorage.getItem('aToken') ? localStorage.getItem('aToken') : '');
     const [doctors, setDoctors] = useState([]);
-
+    const [appointments,setAppointments]=useState([])
+    const [dashData, setDashData] = useState(null);
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
     
     
 
-   const getAllDoctors = async () => {
+const getAllDoctors = async () => {
 
         try {
 
@@ -49,8 +50,69 @@ const AdminContextProvider = (props) => {
         }
     }
 
+        // Getting all appointment data from Database using API
+    const getAllAppointments = async () => {
+
+        try {
+
+            const { data } = await axios.get(backendUrl + '/api/admin/appointments', { headers: { aToken } })
+            if (data.success) {
+                setAppointments(data.appointments.reverse())
+            } else {
+                toast.error(data.message)
+            }
+
+        } catch (error) {
+            toast.error(error.message)
+            console.log(error)
+        }
+
+    }
+    // Function to cancel appointment using API
+    const cancelAppointment = async (appointmentId) => {
+
+        try {
+
+            const { data } = await axios.post(backendUrl + '/api/admin/cancel-appointment', { appointmentId }, { headers: { aToken } })
+
+            if (data.success) {
+                toast.success(data.message)
+                getAllAppointments()
+            } else {
+                toast.error(data.message)
+            }
+
+        } catch (error) {
+            toast.error(error.message)
+            console.log(error)
+        }
+
+    }
+    const getDashData = async () => {
+        try {
+            const { data } = await axios.get(backendUrl + '/api/admin/dashboard', { headers: { aToken } })
+            if (data.success) {
+                setDashData(data.dashboardData)
+            } else {
+                toast.error(data.message)
+            }
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
+
     const value = {
-        aToken, setAToken, backendUrl, doctors, getAllDoctors,changeAvailability
+        aToken,
+        setAToken,
+        backendUrl,
+        doctors,
+        getAllDoctors,
+        changeAvailability,
+        getAllAppointments,
+        appointments,
+        cancelAppointment,
+        getDashData,
+        dashData
     };
 
     return (
