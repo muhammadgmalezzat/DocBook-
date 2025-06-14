@@ -1,6 +1,3 @@
-# DocBook-
-
-Full stack Doctor Appointment Booking System
 
 # 🏥 Doctor Appointment Booking System – MERN Stack
 
